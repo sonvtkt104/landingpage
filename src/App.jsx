@@ -25,6 +25,7 @@ function App() {
   const [loadingSpeedUpNow, setLoadingSpeedUpLoad] = useState(0);
   const [loadingSignUp, setLoadingSignUp] = useState(0);
   const [loadingBottomBanner, setLoadingBottomBanner] = useState(0);
+  const [couponSpeed, setCouponSpeed] = useState(0);
 
   useEffect(() => {
     const step = 604800000;    //1 week -> milliseconds
@@ -34,6 +35,16 @@ function App() {
     const distanceWeek = parseInt((dateCurrent.getTime() - dateOrigin.getTime()) / step);
 
     setPeople((pre) => pre + 100 * distanceWeek);
+
+    fetch("/api/birthday-get-coupon-speed")
+    .then(response => response.json())
+    .then(data => {
+      if(data) {
+        setCouponSpeed(1);
+      }
+    })
+    .catch(err => {
+    })
   }, [])
 
   const handleSignUp = () => {
@@ -145,7 +156,15 @@ function App() {
             <h3>OUR OFFER</h3>
           </div>
           <div className="pricing-description-offer">
-            <h2 style={{position: 'relative'}}>$350 <span style={{position: 'absolute', color: '#838383', fontSize: '22px', textDecoration: 'line-through', fontWeight: 'normal', lineHeight:"47px", marginLeft: '10px'}}></span></h2>
+            {
+              couponSpeed 
+              ? (
+                <h2 style={{position: 'relative'}}>$300 <span style={{position: 'absolute', color: '#838383', fontSize: '32px', textDecoration: 'line-through', fontWeight: 'normal', lineHeight:"47px", marginLeft: '10px'}}>$350</span></h2>
+              )
+              : (
+                <h2 style={{position: 'relative'}}>$350 <span style={{position: 'absolute', color: '#838383', fontSize: '22px', textDecoration: 'line-through', fontWeight: 'normal', lineHeight:"47px", marginLeft: '10px'}}></span></h2>
+              )
+            }
             <p>One-time payment</p>
             <p>Free re-optimization in 365 days</p>
             <button onClick={handleSignUp} className={loadingSignUp === 1 ? 'active btn' : "btn"}>
@@ -204,8 +223,19 @@ function App() {
           <img src={banner} alt="" />
         </div>
         <div className="responsive-mobile">
-          <p><span style={{fontSize: '24px'}}>$350</span> to be worry-free about pagespeed for <span style={{fontWeight: '500'}}>365 days</span>!</p>
-          <p style={{textAlign: 'left'}}>Hurry, only <span style={{  fontWeight: 'bold' }}>10</span> slots per week!</p>
+          {
+            couponSpeed 
+            ? (<>
+                <p><span style={{fontSize: '28px', fontWeight: '600'}}>$300</span><sup style={{fontSize: '16px', textDecoration: 'line-through', marginLeft: '5px'}}>$350</sup></p>
+                <p style={{fontStyle: 'normal'}}>to be worry-free about pagespeed for 365 days!</p>
+              </>
+            )
+            : (<>
+                <p><span style={{fontSize: '24px'}}>$350</span> to be worry-free about pagespeed for <span style={{fontWeight: '500'}}>365 days</span>!</p>
+                <p style={{textAlign: 'left'}}>Hurry, only <span style={{  fontWeight: 'bold' }}>10</span> slots per week!</p>
+              </>
+            )
+          }
         </div>
         <div>
           <button className={loadingBottomBanner === 1 ? "active" : ""} >
