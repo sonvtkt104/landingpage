@@ -645,3 +645,33 @@ Landing Page
     padding: 20px 5%;
   }
 }
+.pricing-description-offer-option .option {
+  width: 14px;
+  height: 13px;
+  border-radius: 50%;
+  border: 0.7px solid #96A2BA;
+  background: #FFFFFF;
+  position: relative;
+  cursor: pointer;
+  margin-right: 6px;
+  margin-top: 2px;
+}
+.pricing-description-offer-option .option:hover {
+  border: 0.7px solid #58CA8C;
+}
+.pricing-description-offer-option .option.active::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #58CA8C;
+  top: 2px;
+  left: 2px;
+}
+.btn-disabled {
+  cursor: no-drop !important;
+  background: #EDF1F5 !important;
+  color: #C9C9C9 !important;
+}

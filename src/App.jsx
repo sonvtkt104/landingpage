@@ -19,6 +19,35 @@ import diagram from "./assets/images/diagram.png";
 import { useState, useEffect } from 'react'
 import myPDF from './assets/files/SEO Booster Infographic Speed.pdf';
 import {LoadingOutlined} from '@ant-design/icons';
+import { createApp } from "@shopify/app-bridge";
+import { Redirect as ShopifyRedirect } from "@shopify/app-bridge/actions";
+
+let shop_name = document.getElementsByTagName("meta")["shop-name"]?.getAttribute("content")
+
+const appShopify = () => {
+  let apiKey = document.getElementsByTagName("meta")["api-key"]?.getAttribute("content")
+  let shopName = document.getElementsByTagName("meta")["shop-name"]?.getAttribute("content")
+    var appSp = 0;
+    try {
+        appSp = createApp({
+            apiKey: apiKey,
+            shopOrigin: shopName + ".myshopify.com",
+            host: document.getElementsByTagName("meta")["base-url"]?.getAttribute("content")
+        });
+    } catch (e) {
+        console.log(e);
+    }
+    return appSp;
+};
+
+const redirectApp = (url) => {
+    var r = ShopifyRedirect.create(appShopify());
+    r.dispatch(ShopifyRedirect.Action.APP, url);
+};
+
+const redirect = (url) => {
+   window.top.location.replace(url)
+};
 
 function App() {
   const [people, setPeople] = useState(4306);
@@ -26,6 +55,8 @@ function App() {
   const [loadingSignUp, setLoadingSignUp] = useState(0);
   const [loadingBottomBanner, setLoadingBottomBanner] = useState(0);
   const [couponSpeed, setCouponSpeed] = useState(0);
+  const [priceSpeed, setPriceSpeed] = useState(350);
+  const [hasSpeed, setHasSpeed] = useState(false);
 
   useEffect(() => {
     const step = 604800000;    //1 week -> milliseconds
@@ -36,55 +67,101 @@ function App() {
 
     setPeople((pre) => pre + 100 * distanceWeek);
 
-    fetch("/api/birthday-get-coupon-speed")
+    fetch("/api/get-speed-up-current")
     .then(response => response.json())
     .then(data => {
-      if(data) {
-        setCouponSpeed(1);
+      if(data && data?.data) {
+        console.log(data)
+
+        setHasSpeed(true);
       }
     })
     .catch(err => {
     })
   }, [])
 
+  const changePlan = (price) => {
+    let shopId = document.getElementsByTagName("meta")["shop-id"]?.getAttribute("content")
+    console.log(shopId)
+
+    let option;
+    switch (price) {
+      case 150:
+        option = 7
+        break;
+      case 350:
+        option = 3
+        break;
+      case 550:
+        option = 12
+        break;
+      default:
+        break;
+    }
+
+    if(option && shopId) {
+      fetch(`/speed-plan/sign-up?shop-id=${shopId}&option-plan=${option}`)
+      .then(response => response.json())
+      .then(data => {
+        if(data) {
+          console.log('data', data)
+          redirect(data.chargeUrl);
+        }
+      })
+      .catch(err => {
+      })
+    }
+  }
+
   const handleSignUp = () => {
     setLoadingSignUp(1);
 
-    fetch("https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-sign-up-2&ev=1&el={app.shopName}")
+    fetch(`https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-sign-up-2&ev=1&el=${shop_name}`)
     .then (res => {
     })
     .catch(err => {
     })
 
-    window.location = "/speed-plan/sign-up";
+    changePlan(priceSpeed);
   }
 
   const handleClickSpeedUpNow = () => {
     setLoadingSpeedUpLoad(1);
 
-    fetch("https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-sign-up-1&ev=1&el={app.shopName}")
+    fetch(`https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-sign-up-1&ev=1&el=${shop_name}`)
     .then (res => {
     })
     .catch(err => {
     })
 
-    window.location = "/speed-plan/sign-up";
+    changePlan(priceSpeed)
   }
 
   const handleClickBottomBanner = () => {
+    let shopId = document.getElementsByTagName("meta")["shop-id"]?.getAttribute("content")
+    console.log(shopId)
     setLoadingBottomBanner(1);
 
-    fetch("https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-askusanything&ev=1&el={app.shopName}")
+    fetch(`https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-askusanything&ev=1&el=${shop_name}`)
     .then (res => {
     })
     .catch(err => {
     })
 
-    window.location = "/speed-plan/sign-up";
+    fetch(`/speed-plan/sign-up?shop-id=${shopId}`)
+    .then(response => response.json())
+    .then(data => {
+      if(data) {
+        console.log('data', data)
+        redirect(data.chargeUrl);
+      }
+    })
+    .catch(err => {
+    })
   }
 
   const handleDownload = () => {
-    fetch("https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-download&ev=1&el={app.shopName}")
+    fetch(`https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-download&ev=1&el=${shop_name}`)
     .then (res => {
     })
     .catch(err => {
@@ -92,16 +169,15 @@ function App() {
   }
 
   const handleBack = () => {
-    fetch("https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-back&ev=1&el={app.shopName}")
+    fetch(`https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-back&ev=1&el=${shop_name}`)
     .then (res => {
     })
     .catch(err => {
     })
   }
 
-
   return (
-    <div className="landing">
+    <div className="landing" style={{paddingBottom: 0}}>
       <div className="landing-back">
         <a onClick={handleBack} href="/speed-analysis">&lt; Back</a>
       </div>
@@ -115,7 +191,13 @@ function App() {
           <SpeedPackage image={flower} title='Refund for low results' description="Refund is available if there's no major change" />
         </div>
         <div>
-          <button onClick={handleClickSpeedUpNow} className={loadingSpeedUpNow === 1 ? 'active' : ""} >
+          <button onClick={() => {
+              if(!hasSpeed) {
+                handleClickSpeedUpNow()
+              }
+            }} 
+            className={ hasSpeed ? "btn btn-disabled" :  loadingSpeedUpNow === 1 ? 'active btn' : "btn"} 
+          >
             {
               loadingSpeedUpNow === 1 ? <LoadingOutlined style={{position: 'absolute', left: '30px', fontSize: '22px', top: '7px'}}/> : ""
             }
@@ -156,18 +238,47 @@ function App() {
             <h3>OUR OFFER</h3>
           </div>
           <div className="pricing-description-offer">
-            {
-              couponSpeed 
-              ? (
-                <h2 style={{position: 'relative'}}>$300 <span style={{position: 'absolute', color: '#838383', fontSize: '32px', textDecoration: 'line-through', fontWeight: 'normal', lineHeight:"47px", marginLeft: '10px'}}>$350</span></h2>
-              )
-              : (
-                <h2 style={{position: 'relative'}}>$350 <span style={{position: 'absolute', color: '#838383', fontSize: '22px', textDecoration: 'line-through', fontWeight: 'normal', lineHeight:"47px", marginLeft: '10px'}}></span></h2>
-              )
-            }
+            <p style={{margin: '10px 0px 10px 0px'}}>Re-optimization guarantee time</p>
+            <div className="pricing-description-offer-option" style={{ display: 'flex'}}>
+              <span 
+                className={ priceSpeed === 150 ? 'option active' : 'option' }
+                onClick={()=> { 
+                  setPriceSpeed(150)
+                }}
+              >
+              </span>
+              <span>7 days</span>
+              <span 
+                style={{marginLeft: 15}} 
+                className={ priceSpeed === 350 ? 'option active' : 'option' }
+                onClick={()=> { 
+                  setPriceSpeed(350)
+                }}
+              >
+              </span>
+              <span>3 months</span>
+              <span 
+                style={{marginLeft: 15}} 
+                className={ priceSpeed === 550 ? 'option active' : 'option' }
+                onClick={()=> { 
+                  setPriceSpeed(550)
+                }}
+              >
+              </span>
+              <span>12 months</span>
+            </div>
+           
+            <h2 style={{position: 'relative'}}>{`$${priceSpeed}`} <span style={{position: 'absolute', color: '#838383', fontSize: '22px', textDecoration: 'line-through', fontWeight: 'normal', lineHeight:"47px", marginLeft: '10px'}}></span></h2>
+              
             <p>One-time payment</p>
-            <p>Free re-optimization in 365 days</p>
-            <button onClick={handleSignUp} className={loadingSignUp === 1 ? 'active btn' : "btn"}>
+            <button 
+              onClick={() => {
+                if(!hasSpeed) {
+                  handleSignUp()
+                }
+              }} 
+              className={ hasSpeed ? 'btn btn-disabled' : loadingSignUp === 1 ? 'active btn' : "btn"}
+            >
               {
                 loadingSignUp === 1 ? <LoadingOutlined style={{position: 'absolute', left: '50px', fontSize: '22px', top: '10px'}}/> : ""
               }
@@ -193,7 +304,7 @@ function App() {
         </div>
         <div className="FAQ-container">
           <FAQ title="How can you measure my speed score?" description="The speed score of your website is calculated by Google PageSpeed Insight. We will work on its recommendations to improve your speed."/>
-          <FAQ title="How long wil the optimization take?" description="The process normally lasts about 10 - 14 days. Communication is maintained during this period. If there's any update, we'll notice you as soon as possible via Livechat or email."/>
+          <FAQ title="How long will the optimization take?" description="The process normally lasts about 10 - 14 days. Communication is maintained during this period. If there's any update, we'll notice you as soon as possible via Livechat or email."/>
           <FAQ title="What if my score decreases after the optimization?" description="If you witness a decrease in your speed score within the 365-day period after the first optimization, please notify us and our technical team will help you perform additional optimization to lift it up again for free!"/>
           <div className="FAQ-item">
             <h3>If I am not satisfied, can I get my money back?</h3>
@@ -218,7 +329,7 @@ function App() {
           </a>
         </div>
       </div>
-      <div className="landing-bottom-banner" onClick={handleClickBottomBanner}>
+      {/* <div className="landing-bottom-banner" onClick={handleClickBottomBanner}>
         <div>
           <img src={banner} alt="" />
         </div>
@@ -245,7 +356,7 @@ function App() {
             I NEED THIS &gt;
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
