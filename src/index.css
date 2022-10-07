@@ -10,6 +10,9 @@
   --background-color: #F5F6FA;
   --color-shadow: #cacaca;
 }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -115,8 +118,10 @@ Landing Page
   color: white;
   cursor: pointer;
 }
-.landing-speed-up-package div:last-child > button:hover{
+.landing-speed-up-package div:last-child button:hover{
   background-color: var(--color-orange-light);
+  color: white;
+  border: 1px solid var(--color-orange-light);
 }
 .landing-speed-up-package div:last-child > button.active {
   background-color: var(--color-orange-light);
@@ -238,7 +243,7 @@ Landing Page
 }
 .pricing-description-offer {
   padding: 5px 20px 15px 20px;
-  width: 70%;
+  width: 80%;
   border-radius:10px;
   border: 1px solid var(--color-orange);
   position: relative;
@@ -566,7 +571,7 @@ Landing Page
   }
 }
 /* max-width 420px*/
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 500px) {
   .speed-package-container {
     flex-direction: column;
   }

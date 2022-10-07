@@ -22,7 +22,7 @@ import {LoadingOutlined} from '@ant-design/icons';
 import { createApp } from "@shopify/app-bridge";
 import { Redirect as ShopifyRedirect } from "@shopify/app-bridge/actions";
 
-let shop_name = document.getElementsByTagName("meta")["shop-name"]?.getAttribute("content")
+const shop_name = document.getElementsByTagName("meta")["shop-name"]?.getAttribute("content")
 
 const appShopify = () => {
   let apiKey = document.getElementsByTagName("meta")["api-key"]?.getAttribute("content")
@@ -116,11 +116,22 @@ function App() {
   const handleSignUp = () => {
     setLoadingSignUp(1);
 
-    fetch(`https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-sign-up-2&ev=1&el=${shop_name}`)
-    .then (res => {
-    })
-    .catch(err => {
-    })
+    let gaAction = "";
+    switch (priceSpeed) {
+      case 150:
+        gaAction = 'signup_7days'
+        break;
+      case 350:
+        gaAction = 'signup_3months'
+        break;
+      case 550:
+        gaAction = 'signup_12months'
+        break;
+      default:
+        break;
+    }    
+
+    fetch(`https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=${gaAction}&ev=1&el=${shop_name}`)
 
     changePlan(priceSpeed);
   }
@@ -161,7 +172,7 @@ function App() {
   }
 
   const handleDownload = () => {
-    fetch(`https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=lp-download&ev=1&el=${shop_name}`)
+    fetch(`https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=infographic_dowload&ev=1&el=${shop_name}`)
     .then (res => {
     })
     .catch(err => {
@@ -174,12 +185,13 @@ function App() {
     })
     .catch(err => {
     })
+    redirect("/speed-analysis");
   }
 
   return (
     <div className="landing" style={{paddingBottom: 0}}>
       <div className="landing-back">
-        <a onClick={handleBack} href="/speed-analysis">&lt; Back</a>
+        <span onClick={handleBack} style={{cursor: 'pointer'}}>&lt; Back</span>
       </div>
       <div className="landing-speed-up-package">
         <h1>SPEED UP PACKAGE</h1>
@@ -191,18 +203,26 @@ function App() {
           <SpeedPackage image={flower} title='Refund for low results' description="Refund is available if there's no major change" />
         </div>
         <div>
-          <button onClick={() => {
-              if(!hasSpeed) {
-                handleClickSpeedUpNow()
-              }
-            }} 
-            className={ hasSpeed ? "btn btn-disabled" :  loadingSpeedUpNow === 1 ? 'active btn' : "btn"} 
+          <a href="#landing-page-offer" style={{borderRadius: '6px'}}
+            onClick={()=> {
+              fetch(`https://www.google-analytics.com/collect?v=1&t=event&tid=UA-53113273-31&cid=e89af982-d7d8-415c-9bd0-b306d9b1ce53&ec=Speed_It_Up&ea=top_speedup_scroll&ev=1&el=${shop_name}`)
+            }}
           >
-            {
-              loadingSpeedUpNow === 1 ? <LoadingOutlined style={{position: 'absolute', left: '30px', fontSize: '22px', top: '7px'}}/> : ""
-            }
-            SPEED UP NOW &gt;
-          </button>
+            <button 
+              // onClick={() => {
+              //   if(!hasSpeed) {
+              //     handleClickSpeedUpNow()
+              //   }
+              // }} 
+              style={{padding: "7px 55px"}}
+              className={"btn"} 
+            >
+              {/* {
+                loadingSpeedUpNow === 1 ? <LoadingOutlined style={{position: 'absolute', left: '30px', fontSize: '22px', top: '7px'}}/> : ""
+              } */}
+              SPEED UP NOW &gt;
+            </button>
+          </a>
         </div>
       </div>
       <div className="speed-optimization-flow">
@@ -213,7 +233,7 @@ function App() {
           <SpeedFlow sequence="3" title="Enjoy Fast, Interactive Pages" checkNow={false} />
         </div>
       </div>
-      <div className="pricing">
+      <div className="pricing" id="landing-page-offer">
         <div className="pricing-image">
           <img src={process} alt="process" />
         </div>
