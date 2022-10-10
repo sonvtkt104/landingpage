@@ -55,7 +55,7 @@ function App() {
   const [loadingSignUp, setLoadingSignUp] = useState(0);
   const [loadingBottomBanner, setLoadingBottomBanner] = useState(0);
   const [couponSpeed, setCouponSpeed] = useState(0);
-  const [priceSpeed, setPriceSpeed] = useState(350);
+  const [priceSpeed, setPriceSpeed] = useState(150);
   const [hasSpeed, setHasSpeed] = useState(false);
 
   useEffect(() => {
@@ -185,13 +185,15 @@ function App() {
     })
     .catch(err => {
     })
-    redirect("/speed-analysis");
+    // redirect("/speed-analysis");
   }
 
   return (
-    <div className="landing" style={{paddingBottom: 0}}>
+    <div className="landing" style={{paddingBottom: 0, backgroundColor: 'white'}}>
       <div className="landing-back">
-        <span onClick={handleBack} style={{cursor: 'pointer'}}>&lt; Back</span>
+        <a href="/speed-analysis" onClick={handleBack}>
+          <span style={{cursor: 'pointer'}}>&lt; Back</span>
+        </a>
       </div>
       <div className="landing-speed-up-package">
         <h1>SPEED UP PACKAGE</h1>
@@ -325,7 +327,7 @@ function App() {
         <div className="FAQ-container">
           <FAQ title="How can you measure my speed score?" description="The speed score of your website is calculated by Google PageSpeed Insight. We will work on its recommendations to improve your speed."/>
           <FAQ title="How long will the optimization take?" description="The process normally lasts about 10 - 14 days. Communication is maintained during this period. If there's any update, we'll notice you as soon as possible via Livechat or email."/>
-          <FAQ title="What if my score decreases after the optimization?" description="If you witness a decrease in your speed score within the 365-day period after the first optimization, please notify us and our technical team will help you perform additional optimization to lift it up again for free!"/>
+          <FAQ title="What if my score decreases after the optimization?" description="If you witness a decrease in your speed score within the guarantee time after the first optimization, please notify us and our technical team will help you perform additional optimization to lift it up again for free!"/>
           <div className="FAQ-item">
             <h3>If I am not satisfied, can I get my money back?</h3>
             <p>We are open for a full refund in <span>two following cases:</span></p>
