@@ -9,6 +9,8 @@
       name="description"
       content="Web site created using create-react-app"
     />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="jwt-token" content="@php echo (!empty($_GET['token'])?$_GET['token']:''); @endphp">
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/

@@ -67,7 +67,13 @@ function App() {
 
     setPeople((pre) => pre + 100 * distanceWeek);
 
-    fetch("/api/get-speed-up-current")
+    fetch("/api/get-speed-up-current", {
+      headers: {
+        'Content-Type': 'application/json',
+        "X-CSRF-TOKEN": document.querySelector('meta[name=csrf-token]').getAttribute('content'),
+        'Authorization': (document.getElementsByTagName("meta")["jwt-token"]?document.getElementsByTagName("meta")["jwt-token"].getAttribute("content"):'')
+      }
+    })
     .then(response => response.json())
     .then(data => {
       if(data && data?.data) {
