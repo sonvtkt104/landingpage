@@ -55,7 +55,7 @@ function App() {
   const [loadingSignUp, setLoadingSignUp] = useState(0);
   const [loadingBottomBanner, setLoadingBottomBanner] = useState(0);
   const [couponSpeed, setCouponSpeed] = useState(0);
-  const [priceSpeed, setPriceSpeed] = useState(150);
+  const [priceSpeed, setPriceSpeed] = useState(350);
   const [hasSpeed, setHasSpeed] = useState(false);
 
   useEffect(() => {
@@ -70,8 +70,8 @@ function App() {
     fetch("/api/get-speed-up-current", {
       headers: {
         'Content-Type': 'application/json',
-        "X-CSRF-TOKEN": document.querySelector('meta[name=csrf-token]').getAttribute('content'),
-        'Authorization': (document.getElementsByTagName("meta")["jwt-token"]?document.getElementsByTagName("meta")["jwt-token"].getAttribute("content"):'')
+        "X-CSRF-TOKEN": document.querySelector('meta[name=csrf-token]')?.getAttribute('content'),
+        'shop': `${shop_name}.myshopify.com`,
       }
     })
     .then(response => response.json())
@@ -92,7 +92,7 @@ function App() {
 
     let option;
     switch (price) {
-      case 150:
+      case 300:
         option = 7
         break;
       case 350:
@@ -124,7 +124,7 @@ function App() {
 
     let gaAction = "";
     switch (priceSpeed) {
-      case 150:
+      case 300:
         gaAction = 'signup_7days'
         break;
       case 350:
@@ -269,9 +269,9 @@ function App() {
             <p style={{margin: '10px 0px 10px 0px'}}>Re-optimization guarantee time</p>
             <div className="pricing-description-offer-option" style={{ display: 'flex'}}>
               <span 
-                className={ priceSpeed === 150 ? 'option active' : 'option' }
+                className={ priceSpeed === 300 ? 'option active' : 'option' }
                 onClick={()=> { 
-                  setPriceSpeed(150)
+                  setPriceSpeed(300)
                 }}
               >
               </span>
