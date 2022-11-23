@@ -55,7 +55,7 @@ function App() {
   const [loadingSignUp, setLoadingSignUp] = useState(0);
   const [loadingBottomBanner, setLoadingBottomBanner] = useState(0);
   const [couponSpeed, setCouponSpeed] = useState(0);
-  const [priceSpeed, setPriceSpeed] = useState(350);
+  const [priceSpeed, setPriceSpeed] = useState(550);
   const [hasSpeed, setHasSpeed] = useState(false);
 
   useEffect(() => {
