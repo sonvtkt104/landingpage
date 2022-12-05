@@ -268,14 +268,14 @@ function App() {
           <div className="pricing-description-offer">
             <p style={{margin: '10px 0px 10px 0px'}}>Re-optimization guarantee time</p>
             <div className="pricing-description-offer-option" style={{ display: 'flex'}}>
-              <span 
+              {/* <span 
                 className={ priceSpeed === 300 ? 'option active' : 'option' }
                 onClick={()=> { 
                   setPriceSpeed(300)
                 }}
               >
               </span>
-              <span>7 days</span>
+              <span>7 days</span> */}
               <span 
                 style={{marginLeft: 15}} 
                 className={ priceSpeed === 350 ? 'option active' : 'option' }
@@ -332,7 +332,7 @@ function App() {
         </div>
         <div className="FAQ-container">
           <FAQ title="How can you measure my speed score?" description="The speed score of your website is calculated by Google PageSpeed Insight. We will work on its recommendations to improve your speed."/>
-          <FAQ title="How long will the optimization take?" description="The process normally lasts about 10 - 14 days. Communication is maintained during this period. If there's any update, we'll notice you as soon as possible via Livechat or email."/>
+          <FAQ title="How long will the optimization take?" description="The process normally lasts about 3 - 7 days. Communication is maintained during this period. If there's any update, we'll notice you as soon as possible via Livechat or email."/>
           <FAQ title="What if my score decreases after the optimization?" description="If you witness a decrease in your speed score within the guarantee time after the first optimization, please notify us and our technical team will help you perform additional optimization to lift it up again for free!"/>
           <div className="FAQ-item">
             <h3>If I am not satisfied, can I get my money back?</h3>
