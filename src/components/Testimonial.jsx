@@ -4,7 +4,7 @@ export default function Testimonial({image, link, before, after, description}) {
     return (
         <div className="testimonial-item">
             <img src={image} alt={description} />
-            <div className="testimonial-item-link"><a href={link}>{link}</a></div>
+            <div className="testimonial-item-link"><a href={link} target="_blank">{link}</a></div>
             <ul className="testimonial-item-list">
                 <li>
                     <span style={{backgroundColor: 'var(--color-red)'}}></span>
