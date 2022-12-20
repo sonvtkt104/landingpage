@@ -55,7 +55,7 @@ function App() {
   const [loadingSignUp, setLoadingSignUp] = useState(0);
   const [loadingBottomBanner, setLoadingBottomBanner] = useState(0);
   const [couponSpeed, setCouponSpeed] = useState(0);
-  const [priceSpeed, setPriceSpeed] = useState(550);
+  const [priceSpeed, setPriceSpeed] = useState(350);
   const [hasSpeed, setHasSpeed] = useState(false);
 
   useEffect(() => {
@@ -96,7 +96,7 @@ function App() {
         option = 7
         break;
       case 350:
-        option = 3
+        option = 6 // change 3 months -> 6 months
         break;
       case 550:
         option = 12
@@ -128,7 +128,7 @@ function App() {
         gaAction = 'signup_7days'
         break;
       case 350:
-        gaAction = 'signup_3months'
+        gaAction = 'signup_6months'  // change 3 months -> 6 months
         break;
       case 550:
         gaAction = 'signup_12months'
@@ -266,35 +266,7 @@ function App() {
             <h3>OUR OFFER</h3>
           </div>
           <div className="pricing-description-offer">
-            <p style={{margin: '10px 0px 10px 0px'}}>Re-optimization guarantee time</p>
-            <div className="pricing-description-offer-option" style={{ display: 'flex'}}>
-              {/* <span 
-                className={ priceSpeed === 300 ? 'option active' : 'option' }
-                onClick={()=> { 
-                  setPriceSpeed(300)
-                }}
-              >
-              </span>
-              <span>7 days</span> */}
-              <span 
-                style={{marginLeft: 15}} 
-                className={ priceSpeed === 350 ? 'option active' : 'option' }
-                onClick={()=> { 
-                  setPriceSpeed(350)
-                }}
-              >
-              </span>
-              <span>3 months</span>
-              <span 
-                style={{marginLeft: 15}} 
-                className={ priceSpeed === 550 ? 'option active' : 'option' }
-                onClick={()=> { 
-                  setPriceSpeed(550)
-                }}
-              >
-              </span>
-              <span>12 months</span>
-            </div>
+            <p style={{margin: '10px 0px 0px 0px'}}>6 months of FREE Re-optimization</p>
            
             <h2 style={{position: 'relative'}}>{`$${priceSpeed}`} <span style={{position: 'absolute', color: '#838383', fontSize: '22px', textDecoration: 'line-through', fontWeight: 'normal', lineHeight:"47px", marginLeft: '10px'}}></span></h2>
               
@@ -331,18 +303,18 @@ function App() {
           <img src={question} alt="" />
         </div>
         <div className="FAQ-container">
-          <FAQ title="How can you measure my speed score?" description="The speed score of your website is calculated by Google PageSpeed Insight. We will work on its recommendations to improve your speed."/>
+          <FAQ title="How can you measure my speed score?" description="We use Google PageSpeed Insights for our speed analysis. The result of our work will also be reflected here. You should see an improvement in your speed score once we are done with the optimization."/>
           <FAQ title="How long will the optimization take?" description="The process normally lasts about 3 - 7 days. Communication is maintained during this period. If there's any update, we'll notice you as soon as possible via Livechat or email."/>
           <FAQ title="What if my score decreases after the optimization?" description="If you witness a decrease in your speed score within the guarantee time after the first optimization, please notify us and our technical team will help you perform additional optimization to lift it up again for free!"/>
           <div className="FAQ-item">
-            <h3>If I am not satisfied, can I get my money back?</h3>
+            <h3>What is the refund policy?</h3>
             <p>We are open for a full refund in <span>two following cases:</span></p>
             <p>- Your website is already well-optimized and there's hardly any room left for improvement.</p>
             <p>- We fail to deliver you the promised results in the end.</p>
           </div>
         </div>
-        <img className="milometer" src={milometer} alt="" />
-        <img className="cashback" src={cashback} alt="" />
+        <img className="milometer" src={milometer} alt="milometer" style={{bottom: '42%'}}/>
+        <img className="cashback" src={cashback} alt="cashback" />
         <div>
           <button className="btn">ASK US ANYTHING</button>
         </div>
